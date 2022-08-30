@@ -21,14 +21,5 @@ workflows:
     # Run the welcome/run job in its own container
     jobs:
       - print_world:
-          depends:  [print_hello]
-      - print_hello
-  # build:
-  #   docker:
-  #     - image: cimg/node:17.2.0 # the primary container, where your job's commands are run
-  #       auth:
-  #         username: omarelsamahy109
-  #         password: 0100*Name  # context / project UI env-var reference
-  #   steps:
-  #     - checkout # check out the code in the project directory
-  #     - run: echo "hello world" # run the `echo` command
+          requires:  [print_hello]
+      - print_hello:
