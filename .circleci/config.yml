@@ -10,7 +10,7 @@ jobs:
       - image: cimg/node:17.2.0 # the primary container, where your job's commands are run
     steps:
       - checkout
-      - run: echo "world"
+      - run: echo $MyName
 
   print_hello:
     docker:
@@ -28,4 +28,3 @@ workflows:
       - print_hello
       - print_world:
           requires:  [print_hello]
-      
