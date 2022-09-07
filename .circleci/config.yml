@@ -6,8 +6,8 @@ orbs:
 
 jobs:
   save_hello_world_output:
-    # docker:
-    #   - image: cimg/node:17.2.0
+    docker:
+      - image: cimg/node:17.2.0
     steps:
       - checkout
       - run: echo "Hello world" > output.txt
@@ -17,6 +17,8 @@ jobs:
             - target/output.txt
 
   print_output_file:
+    docker:
+      - image: cimg/node:17.2.0
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -26,6 +28,6 @@ workflows:
   welcome:
     jobs:
       - welcome/run
-      - print_hello
-      - print_world:
-          requires:  [print_hello]
+      - save_hello_world_output
+      - print_output_file:
+          requires:  [save_hello_world_output]
