@@ -12,7 +12,7 @@ jobs:
       - checkout
       - run: echo "Hello world" > output.txt
       - persist_to_workspace:
-          root: /tmp/dir
+          root: /
           paths:
             - target/output.txt
 
@@ -21,7 +21,7 @@ jobs:
       - image: cimg/node:17.2.0
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: /
       - run: cat target/output.txt
 workflows:
   # Name the workflow "welcome"
