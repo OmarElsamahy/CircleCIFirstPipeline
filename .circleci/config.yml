@@ -1,16 +1,11 @@
 version: 2.1
 
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-
 jobs:
   save_hello_world_output:
     docker:
-      - image: cimg/node:17.2.0
+      - image: circleci/node:13.8.0
     steps:
-      - checkout
-      - run: echo "Hello world" > ~/output.txt
+      - run: echo "hello world" > ~/output.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -18,16 +13,16 @@ jobs:
 
   print_output_file:
     docker:
-      - image: cimg/node:17.2.0
+      - image: circleci/node:13.8.0
     steps:
       - attach_workspace:
           at: ~/
       - run: cat ~/output.txt
+
 workflows:
-  # Name the workflow "welcome"
-  welcome:
+  my_workflow:
     jobs:
-      - welcome/run
       - save_hello_world_output
       - print_output_file:
-          requires:  [save_hello_world_output]
+          requires:
+            - save_hello_world_output
