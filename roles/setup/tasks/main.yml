@@ -1,0 +1,44 @@
+---
+
+- name: 'apt update'
+  become: true
+  apt:
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: true
+  apt:
+    upgrade: yes
+
+- name: 'install dependencies'
+  uri:
+    url: 'https://deb.nodesource.com/setup_14.x'
+    method: GET
+  register: result
+
+- name: 'install node and npm'
+  apt:
+    name: ["nodejs" , "npm "]
+    state: latest
+    update_cache: true
+
+- name: Install/Upgrade pm2 package(s)
+  npm:
+    name: "pm2"
+    global: true
+    state: present
+  become: true
+
+- name: Create a directory if it does not exist
+  file:
+    path: ~/web
+    state: directory
+
+- name: "add js file"
+  copy:
+    src: "index.js"
+    dest: "~/web/index.js"
+
+- name: start pm2 process
+  command: 'pm2 start ~/web/index.js -f'
+  become: true
