@@ -11,15 +11,28 @@ commands:
 
 
 jobs:
-  save_hello_world_output:
+  print_pipeline_id:
     docker:
       - image: cimg/node:17.2.0
     steps:
       - checkout
       - print_pipeline_id
+
+  create_infrastructure: 
+      docker:
+        - image: amazon/aws-cli
+      steps:
+        - checkout
+        - run:
+            name: Create Cloudformation Stack
+            command: |
+              aws cloudformation deploy \
+                --template-file ../cloudformTemp.yml \
+                --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+                --region us-east-1
 workflows:
-  # Name the workflow "welcome"
   welcome:
     jobs:
       - welcome/run
-      - save_hello_world_output
+      - print_pipeline_id
+      - create_infrastructure
