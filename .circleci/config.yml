@@ -46,12 +46,12 @@ jobs:
       - run:
           name: Run Playbook and Configure server
           command: |
-            ansible-playbook -i inventory.txt main.yml -vvvv
+            ansible-playbook -i inventory.txt main.yml
 
 workflows:
   welcome:
     jobs:
       - welcome/run
       - print_pipeline_id
-      #- create_infrastructure
-      - configure_infrastructure
+      - create_infrastructure
+      #- configure_infrastructure
