@@ -31,20 +31,20 @@ jobs:
                 --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
                 --region us-east-1
 
-configure_infrastructure: 
-  docker:
-    - image: python:3.7-alpine3.11
-  steps:
-    - checkout
-    - add_ssh_keys:
-            fingerprints: ["d8:16:dc:fd:bd:a2:fb:01:8f:15:dd:55:20:dc:cd:7e"] 
-    - run:
-        name: Install Ansible
-        command: apk add --update ansible
-          # Install Ansible
-    - run:
-        name: Run Playbook and Configure server
-        command: ansible-playbook -i inventory main.yml
+  configure_infrastructure: 
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+              fingerprints: ["d8:16:dc:fd:bd:a2:fb:01:8f:15:dd:55:20:dc:cd:7e"] 
+      - run:
+          name: Install Ansible
+          command: apk add --update ansible
+            # Install Ansible
+      - run:
+          name: Run Playbook and Configure server
+          command: ansible-playbook -i inventory main.yml
 
 workflows:
   welcome:
