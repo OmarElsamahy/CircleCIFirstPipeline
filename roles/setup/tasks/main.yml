@@ -7,9 +7,8 @@
 - name: "install dependencies."
   become: true
   apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    global: yes
+    name: ["nodejs=14.*", "npm"]
+    #state: latest
     update_cache: yes
 
 - name: "install pm2"
