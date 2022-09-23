@@ -9,7 +9,6 @@ commands:
     steps:
       - run: echo $CIRCLE_WORKFLOW_ID
 
-
 jobs:
   print_pipeline_id:
     docker:
@@ -18,31 +17,34 @@ jobs:
       - checkout
       - print_pipeline_id
 
-  create_infrastructure: 
-      docker:
-        - image: amazon/aws-cli
-      steps:
-        - checkout
-        - run:
-            name: Create Cloudformation Stack
-            command: |
-              aws cloudformation deploy \
-                --template-file cloudformTemp.yml \
-                --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
-                --region us-east-1
+  create_infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Create Cloudformation Stack
+          command: |
+            aws cloudformation deploy \
+              --template-file cloudformTemp.yml \
+              --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+              --region us-east-1
 
-  configure_infrastructure: 
+  configure_infrastructure:
     docker:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - run:
+          name: Instal openssh
+          command: apk add --no-cache openssh-client
       - add_ssh_keys:
           fingerprints: ["d8:16:dc:fd:bd:a2:fb:01:8f:15:dd:55:20:dc:cd:7e"]
       - run:
           name: Install Ansible
           command: |
             apk add --update ansible
-            
+
       - run:
           name: Run Playbook and Configure server
           command: |
